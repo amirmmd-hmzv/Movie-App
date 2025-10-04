@@ -1,32 +1,42 @@
-
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #030014;
-
-  --color-light-100: #cecefb;
-  --color-light-200: #a8b5db;
-
+  /* 🎨 پالت رنگ‌ها */
+  --color-primary: #000000; /* مشکی اصلی */
+  --color-secondary: #030014; /* مشکی با ته بنفش */
+  --color-accent: #ffd93d; /* زرد زرئو */
+  --color-highlight: #ff4c29; /* نارنجی قرمز برای جزئیات */
+  --color-light-100: #f3e9b8; /* زرد کم‌رنگ برای متن روشن */
+  --color-light-200: #d8c774;
   --color-gray-100: #9ca4ab;
-
   --color-dark-100: #0f0d23;
 
+  /* فونت‌ها */
   --font-dm-sans: DM Sans, sans-serif;
+  --font-bebas: "Bebas Neue", sans-serif;
 
+  /* بریک‌پوینت اضافه */
   --breakpoint-xs: 480px;
 
-
-  --background-image-hero-pattern: url("/hero-bg.png");
+  /* 🔥 گرادیانت بک‌گراند هیرو */
+  --background-image-hero-pattern: radial-gradient(
+    circle at top center,
+    rgba(255, 217, 61, 0.95) 0%,
+    /* زرئو درخشان در مرکز بالا */ rgba(255, 140, 0, 0.8) 25%,
+    /* نارنجی ملایم میانه */ rgba(30, 20, 0, 0.6) 55%,
+    /* قهوه‌ای خیلی تیره برای انتقال */ rgba(0, 0, 0, 0.95) 85%,
+    /* مشکی نیمه‌شفاف پایین */ #000000 100% /* مشکی خالص در انتها */
+  );
 }
 
 @layer base {
   body {
-    font-family: "DM Sans", serif;
-    font-optical-sizing: auto;
-    background: #030014;
+    font-family: var(--font-dm-sans);
+    background: var(--color-primary);
+    color: #fff;
   }
 
   h1 {
@@ -34,7 +44,7 @@
   }
 
   h2 {
-    @apply text-2xl font-bold text-white sm:text-3xl;
+    @apply text-2xl font-bold text-light-100 sm:text-3xl;
   }
 
   main {
@@ -46,7 +56,7 @@
   }
 
   header img {
-    @apply w-full max-w-lg h-auto object-contain mx-auto drop-shadow-md;
+    @apply w-full max-w-lg h-auto object-contain mx-auto drop-shadow-[0_0_25px_#ffd93d60];
   }
 }
 
@@ -80,7 +90,7 @@
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/10 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto backdrop-blur-sm border border-light-200/20;
 
     & div {
       @apply relative flex items-center;
@@ -91,7 +101,11 @@
     }
 
     & input {
-      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-gray-200 placeholder-light-200 outline-hidden;
+      @apply w-full bg-transparent py-2 sm:pr-10 pl-10 text-base text-light-100 placeholder-light-200 outline-none;
+    }
+
+    & input:focus {
+      @apply border-b border-accent;
     }
   }
 
@@ -104,14 +118,14 @@
   }
 
   .movie-card {
-    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10;
+    @apply bg-dark-100 p-5 rounded-2xl shadow-inner shadow-light-100/10 hover:shadow-[0_0_20px_#ffd93d40] transition-shadow duration-300;
 
     & img {
       @apply rounded-lg h-auto w-full;
     }
 
     & h3 {
-      @apply text-white font-bold text-base line-clamp-1;
+      @apply text-light-100 font-bold text-base line-clamp-1;
     }
 
     & .content {
@@ -127,31 +141,30 @@
     }
 
     & .rating p {
-      @apply font-bold text-base text-white;
+      @apply font-bold text-base text-accent;
     }
 
     & .content span {
       @apply text-sm text-gray-100;
     }
 
-    & .content .lang {
-      @apply capitalize text-gray-100 font-medium text-base;
-    }
-
+    & .content .lang,
     & .content .year {
-      @apply text-gray-100 font-medium text-base;
+      @apply text-light-200 font-medium text-base;
     }
   }
 }
 
 @utility text-gradient {
-  @apply bg-linear-to-r from-[#D6C7FF] to-[#AB8BFF] bg-clip-text text-transparent;
+  @apply bg-linear-to-r from-[#FFD93D] to-[#FF4C29] bg-clip-text text-transparent;
 }
 
 @utility fancy-text {
-  -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
-  font-size: 190px;
-  font-family: "Bebas Neue", sans-serif;
+  -webkit-text-stroke: 3px #ffd93d;
+  font-size: 180px;
+  font-family: var(--font-bebas);
+  color: transparent;
+  text-shadow: 0 0 25px #ff4c2960;
 }
 
 @utility hide-scrollbar {

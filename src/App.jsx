@@ -90,8 +90,8 @@ function App() {
         <header>
           <h1>
             <img src="./hero.png" alt="hero images" />
-            Find <span className="text-gradient">Movies</span> You Will Enjoy
-            without the hassle
+            Discover Movies You’ll Love{" "}
+            <span className="text-gradient">Instantly!</span>
           </h1>
 
           {trendsMovies.length > 0 && (
