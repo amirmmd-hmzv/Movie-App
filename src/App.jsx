@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import Search from "@/components/Search";
-import Spinner from "@/components/Spinner";
 import MovieCard from "@/components/MovieCard";
 import { useDebounce } from "react-use";
 import { getTrendingMovies, updateSearchCount } from "./appwrite";
+import axiosInstance from "./axiosConfig";
+import SkeletonList from "./components/SkeletonCard ";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
@@ -19,16 +20,6 @@ function App() {
     800,
     [searchTerm]
   );
-
-  const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-  const BASE_URL = "https://api.themoviedb.org/3";
-  const API_OPTIONS = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${API_KEY}`,
-    },
-  };
 
   const loadTrendingMovies = async () => {
     try {
@@ -47,22 +38,11 @@ function App() {
       : `/discover/movie?sort_by=popularity.desc&page=1`;
 
     try {
-      const response = await fetch(`${BASE_URL}/${endpoints}`, API_OPTIONS);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.response === "False") {
-        setError(data.error || "No movies found.");
-        setMoviesList([]);
-      }
-
-      setMoviesList(data.results || []);
-      if (query.length > 0 && data.results.length > 0) {
-        updateSearchCount(debouncedValue, data.results[0]);
+      const res = await axiosInstance.get(endpoints);
+      console.log(res);
+      setMoviesList(res.data.results || []);
+      if (query.length > 0 && res.data.results > 0) {
+        updateSearchCount(debouncedValue, res.data.results[0]);
       }
     } catch (error) {
       console.error("Error fetching movies:", error);
@@ -93,6 +73,7 @@ function App() {
             Discover Movies You’ll Love{" "}
             <span className="text-gradient">Instantly!</span>
           </h1>
+          <Search setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
           {trendsMovies.length > 0 && (
             <section className="trending">
@@ -101,22 +82,20 @@ function App() {
               <ul>
                 {trendsMovies.map((movie, index) => (
                   <li key={movie.$id}>
-                    <p>{index + 1}</p>
                     <img src={movie.poster_url} alt={movie.title} />
+                    <p>{index + 1}</p>
                   </li>
                 ))}
               </ul>
             </section>
           )}
-
-          <Search setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
         </header>
 
         <section className="all-movies">
           <h2>All Movies</h2>
 
           {isLoading ? (
-            <Spinner />
+            <SkeletonList count={5} />
           ) : error ? (
             <p className="error">{error}</p>
           ) : moviesList.length > 0 ? (

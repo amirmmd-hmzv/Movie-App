@@ -4,6 +4,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* 🎨 پالت رنگ‌ها */
   --color-primary: #000000; /* مشکی اصلی */
   --color-secondary: #030014; /* مشکی با ته بنفش */
   --color-accent: #ffd93d; /* زرد زرئو */
@@ -81,7 +82,7 @@
     }
 
     & ul li img {
-      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-3.5;
+      @apply w-[127px] h-[163px] rounded-lg object-cover -ml-0;
     }
   }
 
